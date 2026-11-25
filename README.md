@@ -1,35 +1,35 @@
 # CPS310-Midterm2
 
-**Individual process-control assignment by Rahsaun Jeffrey**
+**Rahsaun Jeffrey**
 
-This repository implements an ontology-guided pipeline for AI development of executable scenarios using the existing Zombie Game.
+An ontology-guided process control pipeline for developing executable Zombie Game scenarios with AI assistance.
 
-- Read the [complete assignment answer](docs/PROCESS_CONTROL_PIPELINE.md) for the overall design, all nine pipeline steps, concrete arguments and demo instructions.
-- Inspect the [ontology](control_pipeline/ontology.json) and [major prompts](control_pipeline/prompts/).
-- Review the [committed demonstrations](evidence/pipeline/run_1/) and [comparison table](evidence/pipeline/run_1/summary.csv).
-- Review the [fresh AI responses and correction evidence](evidence/pipeline/session_2/) and [design and argument instructions](control_pipeline/prompts/DEVELOPMENT_CONTEXT.md).
-- Review the [test log](evidence/pipeline/tests.txt).
+## Start here
 
-Run these commands from the repository root. The first demo command runs the original six demos and produces 11 comparison rows. The second reproduces the fresh-response comparison and correction in four attempts.
+| What to review | Where to find it |
+| --- | --- |
+| All nine pipeline steps, overall design and concrete arguments | [Assignment report](docs/PROCESS_CONTROL_PIPELINE.md) |
+| Domain concepts, relationships and executable constraints | [Ontology](control_pipeline/ontology.json) |
+| Major design, argument, generation and repair prompts | [Prompts](control_pipeline/prompts/README.md) |
+| Demo results and intermediate artifacts | [Evidence index](evidence/README.md) |
+| Implementation | [Controller](control_pipeline/pipeline.py), [runtime](control_pipeline/runtime.py) and [demo runner](run_demos.py) |
+
+## Run all demos
+
+Open a terminal in this repository's folder. Use Python 3.10 or later with Tkinter installed.
 
 ```powershell
 py -m pip install -r requirements.txt
 py -m unittest discover -s tests -v
-py -m control_pipeline.demo --output results/pipeline-demo
-py run_session_demo.py --output results/session-demo
+py run_demos.py --output results/demos
 ```
 
-Read the report's **Run every demo and inspect the results** section for every expected outcome, output location, individual rerun command and recovery step.
+On macOS or Linux, use `python3` in place of `py`. Use a fresh output directory for each run, such as `results/demos-2`.
 
-Use a new output directory for each run. The demonstration includes 40-agent and 1,000-agent scenarios using the real simulation. Candidate responses were authored by the ChatGPT assistant during development. Deliberately injected faults are labeled in the evidence.
+The command runs the valid 40-agent, 1,000-agent and 180-agent scenarios, the controlled-versus-naive comparisons, and the rejection and correction examples. It saves summaries to `results/demos/validation/summary.csv` and `results/demos/session/summary.csv`. Intentional rejections are expected demo outcomes. Detailed instructions and expected results are in the report.
 
-The game foundation was imported from [dokeefe414/CPS310-Zombie-Game](https://github.com/dokeefe414/CPS310-Zombie-Game) at commit `81464f9`. Original game contributors are Daniel O'Keefe, Owen Bowers and Rahsaun Jeffrey. 
+## Credits and scope
 
+The simulation foundation comes from [CPS310-Zombie-Game](https://github.com/dokeefe414/CPS310-Zombie-Game), developed by Daniel O'Keefe, Owen Bowers and Rahsaun Jeffrey. This individual submission adds the ontology, development pipeline, prompts, tests and comparisons.
 
-## Runtime dependencies
-
-`Zombie_Game.py` supplies the simulation used by the demos. It imports `models.py`, `forecasting.py` and `db_manager.py`. Install Python with Tkinter available. The headless demos require the Python database driver but can run without a PostgreSQL server.
-
-Each demo output directory contains the exact prompts, ontology snapshots, generated code, validation results and simulation histories required for the assignment.
-
-The fresh responses were authored after the assistant read the saved prompts in the ongoing conversation. Both workflows passed. The fault fixture is deliberately injected, and the correction is a new response to its feedback. Provenance records the shared context and the scope of the comparison.
+The demonstrations use saved AI-assisted responses. Injected faults are identified in the evidence. Both initial responses in the 180-agent comparison pass, and their shared assistant context is recorded in the provenance.

@@ -13,5 +13,4 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -s tests -v
-      - run: python -m control_pipeline.demo --output results/ci-demo
-      - run: python run_session_demo.py --output results/ci-session-demo
+      - run: python run_demos.py --output results/ci-demos

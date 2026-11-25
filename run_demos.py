@@ -1,6 +1,6 @@
-"""Replay the fresh session's controlled, naive and correction responses.
+"""Run all recorded pipeline demonstrations and comparisons.
 
-python run_session_demo.py --output results/session-demo
+python run_demos.py --output results/demos
 """
 import argparse
 import copy
@@ -64,7 +64,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    demonstrate(args.output)
+    from control_pipeline.demo import demonstrate as validation_demo
+    args.output.mkdir(parents=True, exist_ok=False)
+    validation_demo(args.output / 'validation')
+    demonstrate(args.output / 'session')
 
 
 if __name__ == '__main__':
