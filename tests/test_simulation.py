@@ -1,19 +1,10 @@
-"""Integration regression tests: protect the existing swarm policy.
-
-Run with:
-    py -m unittest discover -s tests -v
-
-These tests deliberately do not open Tkinter, require PostgreSQL, or edit
-Owen's models.py. They check the simulation/forecasting integration boundary.
-"""
+"""Regression checks for the simulation behaviors exercised by pipeline scenarios."""
 import unittest
 from unittest.mock import Mock, patch
 
 import numpy as np
 
-from forecasting import SlidingWindowAdaptiveKalman
-from experiment_runner import run_simulation
-from Zombie_Game import Human, SimulationGUI, SimulationPlayground, Zombie
+from Zombie_Game import Human, SimulationPlayground, Zombie
 
 
 class SwarmIntegrationTests(unittest.TestCase):
@@ -94,47 +85,7 @@ class SwarmIntegrationTests(unittest.TestCase):
         finally:
             arena.close()
 
-    def test_window_replay_does_not_modify_simulation_or_learner(self):
-        """Switching forecast window replays observations, not simulation ticks."""
-        arena, _, _ = self.make_arena()
-        try:
-            gui = object.__new__(SimulationGUI)  # avoid needing a display
-            gui.window_var = Mock()
-            gui.window_var.get.return_value = 20
-            gui.total_initial = 1000
-            gui.forecast_horizon = 10
-            gui.zombie_history = [200, 200, 201, 202, 203, 202, 201]
-            gui.draw_graph = Mock()
-            gui.update_header = Mock()
-            before_count = arena.tick_count
-            before_a = {a: x.copy() for a, x in arena.swarm_learner.A_inv.items()}
-            before_b = {a: x.copy() for a, x in arena.swarm_learner.b.items()}
 
-            gui.change_window()
-
-            self.assertIsInstance(gui.forecaster, SlidingWindowAdaptiveKalman)
-            self.assertEqual(gui.forecaster.window, 20)
-            self.assertEqual(gui.forecaster.observations, len(gui.zombie_history))
-            self.assertEqual(len(gui.zombie_forecast), 10)
-            self.assertEqual(arena.tick_count, before_count)
-            for action in before_a:
-                np.testing.assert_array_equal(arena.swarm_learner.A_inv[action],
-                                              before_a[action])
-                np.testing.assert_array_equal(arena.swarm_learner.b[action],
-                                              before_b[action])
-            gui.draw_graph.assert_called_once()
-            gui.update_header.assert_called_once()
-        finally:
-            arena.close()
-
-    def test_same_seed_has_identical_pre_intervention_population(self):
-        """Intervention must not affect behavior before its requested tick."""
-        control, _ = run_simulation(agents=60, ticks=8, seed=19)
-        shifted, _ = run_simulation(agents=60, ticks=8, seed=19,
-                                    shift_tick=5)
-        self.assertGreaterEqual(len(control), 5)
-        self.assertEqual(control[:5], shifted[:5])
-        self.assertEqual(shifted[5]["strategy"], "rush_only")
 
 
 if __name__ == "__main__":

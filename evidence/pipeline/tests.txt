@@ -6,33 +6,16 @@ test_runtime_failure_cannot_promote_controlled_artifact (test_control_pipeline.C
 test_types_relationship_limits_and_intent_are_enforced (test_control_pipeline.ControlPipelineTests.test_types_relationship_limits_and_intent_are_enforced) ... ok
 test_unknown_api_field_is_rejected_before_acceptance (test_control_pipeline.ControlPipelineTests.test_unknown_api_field_is_rejected_before_acceptance) ... ok
 test_valid_scenario_runs_real_game_and_is_reproducible (test_control_pipeline.ControlPipelineTests.test_valid_scenario_runs_real_game_and_is_reproducible) ... ok
-test_intervention_is_recorded (test_experiments.ExperimentTests.test_intervention_is_recorded) ... ok
-test_invalid_input (test_experiments.ExperimentTests.test_invalid_input) ... ok
-test_metrics_have_matured_targets (test_experiments.ExperimentTests.test_metrics_have_matured_targets) ... ok
-test_shift_phase_boundaries (test_experiments.ExperimentTests.test_shift_phase_boundaries) ... ok
-test_small_headless_run (test_experiments.ExperimentTests.test_small_headless_run) ... ok
-test_bounds (test_forecasting.ForecastTests.test_bounds) ... ok
-test_flat_series_stays_near_persistence (test_forecasting.ForecastTests.test_flat_series_stays_near_persistence) ... ok
-test_initialization_and_horizon (test_forecasting.ForecastTests.test_initialization_and_horizon) ... ok
-test_linear_growth_forecast (test_forecasting.ForecastTests.test_linear_growth_forecast) ... ok
-test_no_lookahead_metrics (test_forecasting.ForecastTests.test_no_lookahead_metrics) ... ok
-test_shift_and_rolling_window (test_forecasting.ForecastTests.test_shift_and_rolling_window) ... ok
-test_validation (test_forecasting.ForecastTests.test_validation) ... ok
-test_windows_change_forecast_after_shift (test_forecasting.ForecastTests.test_windows_change_forecast_after_shift) ... ok
-test_research_intervention_is_opt_in_and_reversible (test_swarm_integration.SwarmIntegrationTests.test_research_intervention_is_opt_in_and_reversible)
+test_research_intervention_is_opt_in_and_reversible (test_simulation.SwarmIntegrationTests.test_research_intervention_is_opt_in_and_reversible)
 Rush-only experiments bypass selection; returning to default restores it. ... ok
-test_same_seed_has_identical_pre_intervention_population (test_swarm_integration.SwarmIntegrationTests.test_same_seed_has_identical_pre_intervention_population)
-Intervention must not affect behavior before its requested tick. ... ok
-test_swarm_posterior_updates_on_bite_and_conversion (test_swarm_integration.SwarmIntegrationTests.test_swarm_posterior_updates_on_bite_and_conversion)
+test_swarm_posterior_updates_on_bite_and_conversion (test_simulation.SwarmIntegrationTests.test_swarm_posterior_updates_on_bite_and_conversion)
 Original game-theory reward/posterior path remains operational. ... ok
-test_thompson_clock_refreshes_on_normal_ticks (test_swarm_integration.SwarmIntegrationTests.test_thompson_clock_refreshes_on_normal_ticks)
+test_thompson_clock_refreshes_on_normal_ticks (test_simulation.SwarmIntegrationTests.test_thompson_clock_refreshes_on_normal_ticks)
 Simulation ticks still advance Owen's posterior-sampling clock. ... ok
-test_thompson_is_default_and_each_action_still_reachable (test_swarm_integration.SwarmIntegrationTests.test_thompson_is_default_and_each_action_still_reachable)
+test_thompson_is_default_and_each_action_still_reachable (test_simulation.SwarmIntegrationTests.test_thompson_is_default_and_each_action_still_reachable)
 Normal simulation must call Owen's learner for all three actions. ... ok
-test_window_replay_does_not_modify_simulation_or_learner (test_swarm_integration.SwarmIntegrationTests.test_window_replay_does_not_modify_simulation_or_learner)
-Switching forecast window replays observations, not simulation ticks. ... ok
 
 ----------------------------------------------------------------------
-Ran 27 tests in 0.749s
+Ran 12 tests in 0.887s
 
 OK

@@ -8,7 +8,7 @@ This submission designs and implements a process control pipeline for AI-driven 
 
 The scope is intentionally bounded to scenario development. Supported changes include arena dimensions, population composition, tick budget, random seed and strategy selection. The generated Python delegates game behavior to the existing simulation. More general changes to combat algorithms would require additional ontology rules, code-generation support and tests.
 
-The repository began as a copy of [CPS310-Zombie-Game](https://github.com/dokeefe414/CPS310-Zombie-Game), imported at commit `81464f9ed14c10bb87ae3d9d5d011da9ab5e8695`. The original game and forecasting contributions are credited to Daniel O'Keefe, Owen Bowers and Rahsaun Jeffrey. The process control package, report, prompts and new evidence are for Rahsaun's individual assignment. Existing forecasting figures document earlier work. The new pipeline outcomes appear under `evidence/pipeline/run_1/`.
+The repository began as a copy of [CPS310-Zombie-Game](https://github.com/dokeefe414/CPS310-Zombie-Game), imported at commit `81464f9ed14c10bb87ae3d9d5d011da9ab5e8695`. The original game and forecasting contributions are credited to Daniel O'Keefe, Owen Bowers and Rahsaun Jeffrey. The process control package, report, prompts and new evidence are for Rahsaun's individual assignment. The new pipeline outcomes appear under `evidence/pipeline/run_1/`.
 
 ## Ontology and its role
 
@@ -57,7 +57,7 @@ The replay comparison supplies the same candidate to both policies. This isolate
 | Vocabulary and API compatibility | A closed field set rejects a property the adapter cannot use. | A Python launcher can compile even though an unsupported keyword causes an error when called. Coverage extends to the supported adapter interface. |
 | Population validity | Typed bounds and cross-field rules reject negative counts and invalid totals before execution. | Python accepts a negative integer literal, and `range(-2)` creates zero armed civilians. A later observer catches the count mismatch. |
 | Requirement fidelity | Exact comparison with the task catches legal values that change the requested experiment. | A seed changed from 7 to 99 still compiles and runs. Its resulting trajectory differs from the requested one. Structured task values must themselves express the user's intent correctly. |
-| Behavior and integration | Runtime invariants require initial counts, valid live state and correct tick progression. Existing tests check combat, strategy and forecasting integration. | Compilation alone establishes syntax. Runtime checks cover the executed traces, while unexercised behaviors remain possible failure points. |
+| Behavior and integration | Runtime invariants require initial counts, valid live state and correct tick progression. Simulation tests check combat, conversion and strategy behavior. | Compilation alone establishes syntax. Runtime checks cover the executed traces, while unexercised behaviors remain possible failure points. |
 | Reproducibility and traceability | Saved prompts, inputs, source hashes, seeds and stage receipts connect outputs to their generating context. | A source change after prompt preparation triggers a new context requirement. Hashes detect drift but are not an authentication or security boundary. |
 | Acceptance and recovery | Controlled promotion follows successful execution. Rejections retain feedback for a new attempt. | The baseline promotes three failing examples. Atomic artifact writing prevents partial acceptance files, while each retry preserves earlier evidence. |
 
@@ -78,7 +78,7 @@ The committed run is `evidence/pipeline/run_1/`. Exact controlled, comparison an
 
 In the three deliberately faulty cases, the controlled policy promoted zero artifacts and the compilation-only policy promoted all three. These counts describe the chosen faults. They provide no estimate of how frequently an AI model would produce such errors. The two valid examples passed both policies, showing that the controls also permit supported changes.
 
-The observed test run passed all 27 tests, including eight new tests of the pipeline. The log is `evidence/pipeline/tests.txt`. Unit tests include context mutation, duplicate JSON keys, source-bound inheritance, unsupported fields, type and rule failures, deterministic execution, failed-runtime acceptance prevention and safe retry behavior. GUI interaction and database writes are outside these headless demos.
+The observed test run passed all 12 tests, including eight tests of the pipeline. The log is `evidence/pipeline/tests.txt`. Unit tests include context mutation, duplicate JSON keys, source-bound inheritance, unsupported fields, type and rule failures, deterministic execution, failed-runtime acceptance prevention and safe retry behavior. GUI interaction and database writes are outside these headless demos.
 
 ## Reproduction and independent use
 
@@ -120,5 +120,3 @@ The runtime seeds global random generators within its child process. Python and 
 | All major workflow prompts | Templates under `control_pipeline/prompts/`, full prompts in the committed contexts and generated repair prompts. |
 | Demos with concrete outcomes | Generated launchers, simulation histories, receipts and demonstration summary. |
 | Intermediate results and ontologies on GitHub | Complete selected evidence under `evidence/pipeline/run_1/`, including context snapshots and response provenance. |
-
-The earlier time-series proposal is inherited project background. This report is the response to the individual process-control assignment.
