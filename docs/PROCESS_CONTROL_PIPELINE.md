@@ -28,6 +28,16 @@ Each configuration property has an owning concept and an allowed type or enumera
 
 The ontology supplies the vocabulary in the AI context and executable validation rules in the pipeline. Source binding checks compare declared inheritance with the actual game classes. The runtime observer checks collection types, uniqueness, finite state, live health, arena boundaries, requested initial counts, population capacity and tick progression. The ontology's descriptive attack and conversion relations provide context, while the listed checks and regression tests define the validation coverage.
 
+## Overall pipeline design
+
+The pipeline is a sequence of acceptance gates with a feedback loop. The task specifies the requested scenario, the ontology defines valid concepts and relationships, and the AI proposes a structured implementation. The generator converts that proposal into executable Python. The validator controls which proposals reach execution, and the runtime observer controls which executions reach acceptance.
+
+This ordering addresses distinct failure modes. An unsupported field fails the vocabulary gate. A legal value that changes the request fails the intent gate. Generated code must compile, and the resulting simulation must satisfy observable invariants before the controlled workflow accepts it. If a stage fails, its feedback and the original context become a repair prompt. The revised response enters validation as a new attempt.
+
+The implementation separates responsibilities across four components. `ontology.json` defines the domain contract. `pipeline.py` prepares prompts, checks responses, generates code and manages acceptance. `runtime.py` connects generated scenarios to the existing game and checks live state. `demo.py` compares controlled and baseline acceptance using the same candidate responses. The evidence directory links each outcome to the exact inputs and stages that produced it.
+
+The nine steps below include the human interaction with the AI model. Preparation and validation are executable commands. Supplying the prompt to a model and saving its response is a manual step. The demo command replays saved responses through the executable stages.
+
 ## Pipeline design and every stage
 
 | Step | Action | Output and control |
@@ -63,6 +73,18 @@ The replay comparison supplies the same candidate to both policies. This isolate
 
 These controls improve reliability for the stated scenario-development task because they make vocabulary, intent and behavior explicit conditions of acceptance. Their effect depends on ontology quality and test coverage. A valid scenario can still contain undesirable game dynamics. Approval should also consider whether the task and operating bounds match the intended experiment.
 
+### Concrete arguments supported by the demos
+
+**Argument 1. Ontology validation prevents incompatible scenario code from being accepted.** The injected `infection_rate` field falls outside the ontology's property vocabulary and the adapter's supported arguments. The controlled run rejects it before Python generation and records `promoted=false`. The baseline renders and compiles its launcher, records `promoted=true`, then encounters an unexpected-keyword error during execution. This shows why a successful compilation check alone permits an API incompatibility in this task. The supporting files are `evidence/pipeline/run_1/unknown_api_controlled/report.json`, `unknown_api_naive/report.json` and `unknown_api_naive/stderr.txt`.
+
+**Argument 2. Domain constraints prevent silent changes in population composition.** A negative armed count is valid Python syntax, but the simulation's population loop creates zero armed civilians for that count. The ontology rejects the value before execution. The baseline accepts the launcher and subsequently fails its initial armed-count assertion. The control is effective because the required domain meaning is checked before the language runtime interprets the value. The supporting files are the `negative_count_controlled` and `negative_count_naive` reports and the latter's error log.
+
+**Argument 3. Task comparison protects reproducibility even when a scenario runs successfully.** Seed 99 is a valid domain value, yet the request specified seed 7. The controlled pipeline rejects the mismatch. The baseline runs to completion with 30 humans and 8 zombies at tick 30, compared with 28 humans and 12 zombies for the requested seed. The task evaluator then records a failure. The task-equality gate therefore covers an error that syntax and state invariants permit. The supporting files are `small_context/task.json`, both `changed_requirement` reports and the corresponding simulation histories.
+
+**Argument 4. Acceptance gates allow valid work and support correction.** Both workflows pass the 40-agent and 1,000-agent scenarios. The controlled workflow also accepts a valid response replayed after rejection in a separate attempt directory. These outcomes demonstrate successful integration and recovery within the supported task. The repair example exercises the pipeline using a stored valid response. Its evidence establishes recovery behavior, while evaluating AI repair quality would require new model responses.
+
+Across the three chosen faults, controlled acceptance produced zero premature promotions and baseline acceptance produced three. This is a concrete comparison of acceptance policies on specified inputs. The responses are replayed, and the faults are deliberately injected. Independent model-generation trials would be needed to estimate error frequency, productivity or performance across models.
+
 ## Demonstrations and concrete outcomes
 
 The committed run is `evidence/pipeline/run_1/`. Exact controlled, comparison and repair prompts, ontology copies, generated Python, stage receipts and simulation histories are included. Run-level provenance identifies the current-session assistant responses and distinguishes deliberate fault injection from naturally observed AI mistakes.
@@ -91,6 +113,63 @@ py -m control_pipeline.demo --output results/pipeline-demo
 ```
 
 The output path must be new. To repeat a demonstration, choose another path such as `results/pipeline-demo-2`. The `results/` directory is ignored by Git, so select evidence intended for submission before committing it. The committed example evidence is under `evidence/`.
+
+### Run every demo and inspect the results
+
+Download or clone `Rahsaun/CPS310-Midterm2` and open a terminal in its top-level folder, where `requirements.txt` is located. The repository is private, so use your authorized GitHub account. On Windows, run the following in PowerShell.
+
+```powershell
+cd path/to/CPS310-Midterm2
+py --version
+py -m pip install -r requirements.txt
+py -m unittest discover -s tests -v
+py -m control_pipeline.demo --output results/pipeline-demo
+Import-Csv results/pipeline-demo/summary.csv | Format-Table case,mode,status,promoted
+```
+
+Replace `path/to/CPS310-Midterm2` with the actual folder location. Python 3.10 or later and Tkinter are required. On macOS or Linux, use `python3` in place of `py`. Open the resulting CSV with a text editor or spreadsheet application to inspect the summary.
+
+The single demo command runs all six demonstrations and writes 11 comparison rows. Every output path is relative to `results/pipeline-demo/`.
+
+| Demonstration | Output directories | Expected result |
+| --- | --- | --- |
+| 40-agent scenario | `small_controlled`, `small_naive` | Both pass and promote. |
+| 1,000-agent scenario | `large_controlled`, `large_naive` | Both pass and promote. |
+| Unsupported property | `unknown_api_controlled`, `unknown_api_naive` | Both eventually reject. Controlled promotion is false and baseline promotion is true. |
+| Negative armed count | `negative_count_controlled`, `negative_count_naive` | Both eventually reject. Controlled promotion is false and baseline promotion is true. |
+| Changed requested seed | `changed_requirement_controlled`, `changed_requirement_naive` | Both eventually reject. Controlled promotion is false and baseline promotion is true. |
+| Recovery attempt | `repaired_controlled` | Passes and promotes. |
+
+The demo command exits successfully when these expected outcomes occur, including the intended rejections. In a report, `status` records the final evaluation and `promoted` records whether the workflow accepted the artifact. Baseline `promoted=true` with `status=rejected` means it accepted the artifact before later evaluation exposed the failure.
+
+Use these PowerShell commands to inspect a rejection and its repair instructions.
+
+```powershell
+Get-Content results/pipeline-demo/unknown_api_controlled/report.json
+Get-Content results/pipeline-demo/unknown_api_naive/stderr.txt
+Get-Content results/pipeline-demo/unknown_api_controlled/repair_prompt.txt
+Get-Content results/pipeline-demo/small_controlled/simulation.json
+```
+
+The demos run in the terminal and save population histories to JSON. To repeat all demos, choose a fresh output path.
+
+```powershell
+py -m control_pipeline.demo --output results/pipeline-demo-2
+```
+
+To rerun one acceptance check after the complete demonstration, use a new attempt directory. This example replays the unsupported-field case.
+
+```powershell
+py -m control_pipeline.pipeline run --workspace results/pipeline-demo/small_context --candidate results/pipeline-demo/unknown_api_response.json --output results/unknown-api-recheck --mode controlled
+```
+
+An individual rejected attempt returns exit code 2 and saves feedback. The accepted small scenario can be executed again with the repository root on Python's import path.
+
+```powershell
+py -c "import runpy; runpy.run_path('results/pipeline-demo/small_controlled/accepted.py', run_name='__main__')"
+```
+
+### Create a fresh AI response
 
 For a new AI-assisted development attempt, create a task JSON following the examples, prepare the context, give the controlled prompt to a model, save its response and run validation.
 
