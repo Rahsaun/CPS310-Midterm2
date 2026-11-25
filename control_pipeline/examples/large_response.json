@@ -1,0 +1,5 @@
+{
+  "task_id": "large-arena",
+  "ontology_version": "1.0",
+  "configuration": {"width": 1200, "height": 1200, "num_regular": 750, "num_armed": 50, "num_zombies": 200, "ticks": 10, "seed": 11, "strategy_mode": "rush_only"}
+}

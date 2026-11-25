@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/581f0fd10903/zombie-source/evidence/pipeline/run_1/negative_count_naive/candidate.py", line 8, in <module>
+    print(json.dumps(run_scenario(**CONFIGURATION), allow_nan=False))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/581f0fd10903/zombie-source/control_pipeline/runtime.py", line 32, in run_scenario
+    assert sum(isinstance(agent, ArmedHuman) for agent in sim.humans) == num_armed, "armed count mismatch"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: armed count mismatch

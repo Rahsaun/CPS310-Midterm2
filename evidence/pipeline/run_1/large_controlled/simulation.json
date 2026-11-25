@@ -1,0 +1,62 @@
+{
+  "initial_population": 1000,
+  "ticks_completed": 10,
+  "history": [
+    {
+      "tick": 0,
+      "humans": 800,
+      "zombies": 200
+    },
+    {
+      "tick": 1,
+      "humans": 800,
+      "zombies": 200
+    },
+    {
+      "tick": 2,
+      "humans": 797,
+      "zombies": 203
+    },
+    {
+      "tick": 3,
+      "humans": 797,
+      "zombies": 203
+    },
+    {
+      "tick": 4,
+      "humans": 797,
+      "zombies": 203
+    },
+    {
+      "tick": 5,
+      "humans": 796,
+      "zombies": 204
+    },
+    {
+      "tick": 6,
+      "humans": 796,
+      "zombies": 204
+    },
+    {
+      "tick": 7,
+      "humans": 796,
+      "zombies": 204
+    },
+    {
+      "tick": 8,
+      "humans": 795,
+      "zombies": 205
+    },
+    {
+      "tick": 9,
+      "humans": 795,
+      "zombies": 205
+    },
+    {
+      "tick": 10,
+      "humans": 795,
+      "zombies": 205
+    }
+  ],
+  "strategy": "rush_only"
+}

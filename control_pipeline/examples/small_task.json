@@ -1,0 +1,5 @@
+{
+  "task_id": "mixed-arena",
+  "goal": "Develop a deterministic mixed-agent scenario with 24 civilians, 6 armed civilians and 10 zombies in a 400 by 400 arena. Run 30 ticks using Thompson Sampling and seed 7.",
+  "configuration": {"width": 400, "height": 400, "num_regular": 24, "num_armed": 6, "num_zombies": 10, "ticks": 30, "seed": 7, "strategy_mode": "thompson"}
+}

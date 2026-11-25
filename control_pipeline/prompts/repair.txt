@@ -1,0 +1,3 @@
+Revise your scenario specification using the original task, ontology and validation feedback below.
+Fix every listed violation. Return the complete JSON response, including task_id, ontology_version and configuration.
+Keep all requested values and use only supported configuration fields. Return JSON only.

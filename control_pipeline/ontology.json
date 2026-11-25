@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "concepts": {
+    "Agent": {"source": "Zombie_Game.py:Agent", "abstract": true},
+    "Human": {"source": "Zombie_Game.py:Human"},
+    "ArmedHuman": {"source": "Zombie_Game.py:ArmedHuman"},
+    "Zombie": {"source": "Zombie_Game.py:Zombie"},
+    "SimulationPlayground": {"source": "Zombie_Game.py:SimulationPlayground"},
+    "Scenario": {"source": "control_pipeline/runtime.py:run_scenario"},
+    "Strategy": {"members": ["thompson", "rush_only"]}
+  },
+  "relations": [
+    {"subject": "Human", "predicate": "subclass_of", "object": "Agent"},
+    {"subject": "ArmedHuman", "predicate": "subclass_of", "object": "Human"},
+    {"subject": "Zombie", "predicate": "subclass_of", "object": "Agent"},
+    {"subject": "SimulationPlayground", "predicate": "contains", "object": "Agent"},
+    {"subject": "Zombie", "predicate": "converts", "object": "Human"},
+    {"subject": "ArmedHuman", "predicate": "attacks", "object": "Zombie"},
+    {"subject": "Scenario", "predicate": "configures", "object": "SimulationPlayground"},
+    {"subject": "SimulationPlayground", "predicate": "uses", "object": "Strategy"}
+  ],
+  "fields": {
+    "width": {"concept": "SimulationPlayground", "type": "integer", "min": 200, "max": 2000},
+    "height": {"concept": "SimulationPlayground", "type": "integer", "min": 200, "max": 2000},
+    "num_regular": {"concept": "Human", "type": "integer", "min": 0, "max": 10000},
+    "num_armed": {"concept": "ArmedHuman", "type": "integer", "min": 0, "max": 10000},
+    "num_zombies": {"concept": "Zombie", "type": "integer", "min": 1, "max": 10000},
+    "ticks": {"concept": "Scenario", "type": "integer", "min": 1, "max": 300},
+    "seed": {"concept": "Scenario", "type": "integer", "min": 0, "max": 4294967295},
+    "strategy_mode": {"concept": "Strategy", "type": "string", "enum": ["thompson", "rush_only"]}
+  },
+  "rules": [
+    {"id": "R1", "kind": "population_limit", "fields": ["num_regular", "num_armed", "num_zombies"], "max": 10000},
+    {"id": "R2", "kind": "minimum_humans", "fields": ["num_regular", "num_armed"], "min": 1}
+  ],
+  "runtime_invariants": [
+    "Agent identifiers are unique across live collections",
+    "Human collection contains Human instances, including ArmedHuman descendants",
+    "Zombie collection contains Zombie instances",
+    "Live agents have finite coordinates and health, remain in arena bounds and have health above zero",
+    "Total live population never exceeds its initial size",
+    "Initial regular, armed and zombie counts match the requested configuration",
+    "Simulation ticks advance exactly once per step"
+  ]
+}

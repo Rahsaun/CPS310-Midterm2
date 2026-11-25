@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/581f0fd10903/zombie-source/evidence/pipeline/run_1/unknown_api_naive/candidate.py", line 8, in <module>
+    print(json.dumps(run_scenario(**CONFIGURATION), allow_nan=False))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_scenario() got an unexpected keyword argument 'infection_rate'

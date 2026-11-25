@@ -1,0 +1,12 @@
+case,provenance,mode,status,promoted,error
+small,session_assistant_response_replay,controlled,passed,True,
+small,session_assistant_response_replay,naive,passed,True,
+large,session_assistant_response_replay,controlled,passed,True,
+large,session_assistant_response_replay,naive,passed,True,
+unknown_api,deliberate_fault_injection,controlled,rejected,False,"fields mismatch; missing=[], unknown=['infection_rate']; configuration differs from requested values"
+unknown_api,deliberate_fault_injection,naive,rejected,True,runtime failed with exit code 1; see stderr.txt
+negative_count,deliberate_fault_injection,controlled,rejected,False,"num_armed outside [0, 10000]; configuration differs from requested values"
+negative_count,deliberate_fault_injection,naive,rejected,True,runtime failed with exit code 1; see stderr.txt
+changed_requirement,deliberate_fault_injection,controlled,rejected,False,configuration differs from requested values
+changed_requirement,deliberate_fault_injection,naive,rejected,True,task evaluation: configuration differs from requested values
+repair,replay_valid_response_after_rejection,controlled,passed,True,

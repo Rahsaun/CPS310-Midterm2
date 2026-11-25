@@ -1,0 +1,7 @@
+Develop an executable Zombie Game scenario by returning a JSON specification for the code generator.
+Use the supplied ontology as the vocabulary and constraints. Respect its subclass relationships.
+Return exactly task_id, ontology_version and configuration. Include every required configuration field and no other fields.
+Copy the requested values exactly. Do not invent API properties or substitute strategy names.
+Use integers for integer fields. Check population rules and enum values before responding.
+The pipeline will generate Python, compile it, run it against the actual simulation and check invariants before accepting it.
+Return a JSON object only.

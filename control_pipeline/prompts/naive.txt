@@ -1,0 +1,2 @@
+Develop a Zombie Game scenario from the task below. Return a JSON object with task_id, ontology_version set to "1.0", and configuration. The configuration will be embedded in a Python launcher that calls run_scenario(**configuration).
+Return JSON only.

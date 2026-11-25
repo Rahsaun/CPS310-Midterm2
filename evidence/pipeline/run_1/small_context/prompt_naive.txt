@@ -1,0 +1,18 @@
+Develop a Zombie Game scenario from the task below. Return a JSON object with task_id, ontology_version set to "1.0", and configuration. The configuration will be embedded in a Python launcher that calls run_scenario(**configuration).
+Return JSON only.
+
+TASK
+{
+  "task_id": "mixed-arena",
+  "goal": "Develop a deterministic mixed-agent scenario with 24 civilians, 6 armed civilians and 10 zombies in a 400 by 400 arena. Run 30 ticks using Thompson Sampling and seed 7.",
+  "configuration": {
+    "width": 400,
+    "height": 400,
+    "num_regular": 24,
+    "num_armed": 6,
+    "num_zombies": 10,
+    "ticks": 30,
+    "seed": 7,
+    "strategy_mode": "thompson"
+  }
+}

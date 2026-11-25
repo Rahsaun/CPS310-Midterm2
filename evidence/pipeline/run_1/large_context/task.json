@@ -1,0 +1,14 @@
+{
+  "task_id": "large-arena",
+  "goal": "Develop a deterministic 1000-agent scenario with 750 civilians, 50 armed civilians and 200 zombies in a 1200 by 1200 arena. Run 10 ticks with rush-only strategy and seed 11.",
+  "configuration": {
+    "width": 1200,
+    "height": 1200,
+    "num_regular": 750,
+    "num_armed": 50,
+    "num_zombies": 200,
+    "ticks": 10,
+    "seed": 11,
+    "strategy_mode": "rush_only"
+  }
+}
