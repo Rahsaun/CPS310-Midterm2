@@ -1,0 +1,5 @@
+{
+  "task_id": "individual-comparison",
+  "goal": "Develop a 180-agent Zombie Game scenario containing 120 civilians, 20 armed civilians and 40 zombies in a 500 by 500 arena. Run 24 ticks with seed 23 and Thompson Sampling. Preserve these exact requirements.",
+  "configuration": {"width": 500, "height": 500, "num_regular": 120, "num_armed": 20, "num_zombies": 40, "ticks": 24, "seed": 23, "strategy_mode": "thompson"}
+}

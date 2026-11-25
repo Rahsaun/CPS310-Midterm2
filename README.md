@@ -7,14 +7,16 @@ This repository implements an ontology-guided pipeline for AI development of exe
 - Read the [complete assignment answer](docs/PROCESS_CONTROL_PIPELINE.md) for the overall design, all nine pipeline steps, concrete arguments and demo instructions.
 - Inspect the [ontology](control_pipeline/ontology.json) and [major prompts](control_pipeline/prompts/).
 - Review the [committed demonstrations](evidence/pipeline/run_1/) and [comparison table](evidence/pipeline/run_1/summary.csv).
+- Review the [fresh AI responses and correction evidence](evidence/pipeline/session_2/) and [design and argument instructions](control_pipeline/prompts/DEVELOPMENT_CONTEXT.md).
 - Review the [test log](evidence/pipeline/tests.txt).
 
-Run these commands from the repository root. This runs all six demos and produces 11 comparison rows.
+Run these commands from the repository root. The first demo command runs the original six demos and produces 11 comparison rows. The second reproduces the fresh-response comparison and correction in four attempts.
 
 ```powershell
 py -m pip install -r requirements.txt
 py -m unittest discover -s tests -v
 py -m control_pipeline.demo --output results/pipeline-demo
+py run_session_demo.py --output results/session-demo
 ```
 
 Read the report's **Run every demo and inspect the results** section for every expected outcome, output location, individual rerun command and recovery step.
@@ -29,3 +31,5 @@ The game foundation was imported from [dokeefe414/CPS310-Zombie-Game](https://gi
 `Zombie_Game.py` supplies the simulation used by the demos. It imports `models.py`, `forecasting.py` and `db_manager.py`. Install Python with Tkinter available. The headless demos require the Python database driver but can run without a PostgreSQL server.
 
 Each demo output directory contains the exact prompts, ontology snapshots, generated code, validation results and simulation histories required for the assignment.
+
+The fresh responses were authored after the assistant read the saved prompts in the ongoing conversation. Both workflows passed. The fault fixture is deliberately injected, and the correction is a new response to its feedback. Provenance records the shared context and the scope of the comparison.

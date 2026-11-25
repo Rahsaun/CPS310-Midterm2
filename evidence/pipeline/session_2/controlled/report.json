@@ -1,0 +1,29 @@
+{
+  "mode": "controlled",
+  "status": "passed",
+  "promoted": true,
+  "stages": [
+    "context_verified",
+    "ontology_and_intent_validated",
+    "python_compiled",
+    "runtime_invariants_passed",
+    "accepted"
+  ],
+  "errors": [],
+  "response_sha256": "6de9889f577e7dbac7b0a60640d26b71ac961f9889e2686dd2fb7b39c1077d55",
+  "ontology_sha256": "634672868d9abfa3bc4e488dc2f7ef97216b657c67f1c318916ae485f377b20a",
+  "source_hashes": {
+    "Zombie_Game.py": "35f4b9cc9954067a13e9a604d0487cbfb4edf6bbc09fa78e773be0ca61d7a089",
+    "models.py": "d2423d5812def46c014ad08da8219148e0eaca5cdd6fb8e1915cd26e1a9e6434",
+    "forecasting.py": "32fce2c056215cf0f5fbe09a66c460f569d9e843339127de4742f90b931dea58",
+    "db_manager.py": "985bc33b6cd4654d791d539f5777d7dc0b127274ad6d9e40298d90996d955d80",
+    "control_pipeline/__init__.py": "5b7cd5a777ad189fc694f5529757f276f5bb8e5daec6420f460bc4fe734935cd",
+    "control_pipeline/demo.py": "cb858274a2861480cbe552418f595d7c0d844ac61a810334135cc7faa9016ed9",
+    "control_pipeline/pipeline.py": "c24a52c56853b992bed84ce85950d247c66cda2631dd48fe50de1504f0923837",
+    "control_pipeline/runtime.py": "65949d59dc16270b4cc5c745a4b19376ee501a527d7627e91abf478eb26017e2",
+    "control_pipeline/prompts/controlled.txt": "d9e07c4d45c64bb26bda1b046a5732f8008aec8178f9a20dc1091625065367f7",
+    "control_pipeline/prompts/naive.txt": "48a0b5914ef9f3f0dc4382c82f3d0ea961f59b57cb7685592ef90d239d375284",
+    "control_pipeline/prompts/repair.txt": "805a092d3c3cfd5110e2ee3bf9d217435e429bdc7c321841a18c1283d738a374",
+    "control_pipeline/ontology.json": "56a191f476a46651ce67cfc90c38ede17594a9636e88879d248d62ca37cdf481"
+  }
+}

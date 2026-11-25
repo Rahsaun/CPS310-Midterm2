@@ -1,0 +1,5 @@
+attempt,source,status,promoted
+naive,new_session_response,passed,True
+controlled,new_session_response,passed,True
+injected_rejection,deliberate_fault_injection,rejected,False
+corrected,new_response_to_saved_feedback,passed,True

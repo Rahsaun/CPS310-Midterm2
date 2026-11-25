@@ -8,7 +8,7 @@ This submission designs and implements a process control pipeline for AI-driven 
 
 The scope is intentionally bounded to scenario development. Supported changes include arena dimensions, population composition, tick budget, random seed and strategy selection. The generated Python delegates game behavior to the existing simulation. More general changes to combat algorithms would require additional ontology rules, code-generation support and tests.
 
-The repository began as a copy of [CPS310-Zombie-Game](https://github.com/dokeefe414/CPS310-Zombie-Game), imported at commit `81464f9ed14c10bb87ae3d9d5d011da9ab5e8695`. The original game and forecasting contributions are credited to Daniel O'Keefe, Owen Bowers and Rahsaun Jeffrey. The process control package, report, prompts and new evidence are for Rahsaun's individual assignment. The new pipeline outcomes appear under `evidence/pipeline/run_1/`.
+The repository began as a copy of [CPS310-Zombie-Game](https://github.com/dokeefe414/CPS310-Zombie-Game), imported at commit `81464f9ed14c10bb87ae3d9d5d011da9ab5e8695`. The original game and forecasting contributions are credited to Daniel O'Keefe, Owen Bowers and Rahsaun Jeffrey. The process control package, report, prompts and new evidence are for Rahsaun's individual assignment. The original pipeline outcomes appear under `evidence/pipeline/run_1/`. The fresh-response comparison and correction evidence appear under `evidence/pipeline/session_2/`.
 
 ## Ontology and its role
 
@@ -101,6 +101,40 @@ The committed run is `evidence/pipeline/run_1/`. Exact controlled, comparison an
 In the three deliberately faulty cases, the controlled policy promoted zero artifacts and the compilation-only policy promoted all three. These counts describe the chosen faults. They provide no estimate of how frequently an AI model would produce such errors. The two valid examples passed both policies, showing that the controls also permit supported changes.
 
 The observed test run passed all 12 tests, including eight tests of the pipeline. The log is `evidence/pipeline/tests.txt`. Unit tests include context mutation, duplicate JSON keys, source-bound inheritance, unsupported fields, type and rule failures, deterministic execution, failed-runtime acceptance prevention and safe retry behavior. GUI interaction and database writes are outside these headless demos.
+
+## Fresh response comparison and correction evidence
+
+A follow-up demonstration uses a new task with 120 civilians, 20 armed civilians and 40 zombies in a 500 by 500 arena, seed 23 and 24 ticks. The assistant read the complete naive and controlled prompts and authored a new JSON response for each. Both responses satisfy the task and contain the same configuration. Each was executed using its corresponding acceptance policy.
+
+| Attempt | Observed result | Evidence |
+| --- | --- | --- |
+| Fresh naive-prompt response | Passed, with 137 humans and 42 zombies after 24 ticks. | `evidence/pipeline/session_2/naive/` |
+| Fresh controlled-prompt response | Passed, with the same population history. | `evidence/pipeline/session_2/controlled/` |
+| Deliberate unsupported-property injection | Rejected before generation with promotion false. | `evidence/pipeline/session_2/injected_rejection/` |
+| Fresh response to the repair feedback | Passed, with 137 humans and 42 zombies after 24 ticks. | `evidence/pipeline/session_2/corrected/` |
+
+For the correction example, the workflow deliberately added `infection_rate=0.5` to the valid controlled response. The assistant then read the generated rejection feedback and authored a complete corrected response that removed the unsupported property and preserved the requested settings. The recorded origin of this fault is explicit. The corrected response was saved separately and executed through the full controlled pipeline.
+
+Both initial responses succeeded. This fresh comparison supports successful AI-assisted scenario development through both workflows. The earlier injected-fault comparison provides the evidence that the added acceptance controls prevent premature promotion for the selected errors. Together these demonstrations cover generation, successful execution, rejection and correction. They do not establish an accuracy advantage for the controlled prompt.
+
+All new responses were produced in this ongoing assistant conversation. The assistant had already seen the game and ontology, including when answering the naive prompt. This is a shared-context demonstration. An independently sampled comparison would require separate model sessions with isolated prompt contexts. A model API or paid subscription is optional for that extension.
+
+The complete composed prompts, raw responses, ontology snapshot, generated code, stage receipts, population histories and provenance are committed under `evidence/pipeline/session_2/`. The major assignment, design and argument instructions are recorded in `control_pipeline/prompts/DEVELOPMENT_CONTEXT.md`. That instruction record was assembled retrospectively from the visible conversation and identifies its scope. The operational prompt files are preserved verbatim with their corresponding runs.
+
+### Reproduce the fresh-response and correction demonstration
+
+Run the following from the repository root after installing the dependencies. Use a new output directory.
+
+```powershell
+py run_session_demo.py --output results/session-demo
+Import-Csv results/session-demo/summary.csv | Format-Table attempt,status,promoted
+Get-Content results/session-demo/context/prompt_naive.txt
+Get-Content results/session-demo/context/prompt_controlled.txt
+Get-Content results/session-demo/injected_rejection/repair_prompt.txt
+Get-Content results/session-demo/corrected/report.json
+```
+
+Expected evaluation statuses, in order, are `passed`, `passed`, `rejected`, `passed`. The rejection has `promoted=false`. The script exits successfully when all expected outcomes occur. This command replays the newly recorded responses and feedback correction. To obtain additional model outputs, give the composed prompts to an accessible model, save each complete response with its model/session provenance and use the pipeline's `run` command with a new attempt directory.
 
 ## Reproduction and independent use
 
@@ -196,6 +230,6 @@ The runtime seeds global random generators within its child process. Python and 
 | Explicit pipeline steps and design | This report and `control_pipeline/pipeline.py`. |
 | Ontology used in AI-driven development | `control_pipeline/ontology.json`, source binding checks and saved controlled prompts. |
 | Rigorous argument and comparison | Comparison section, `control_pipeline/demo.py` and `evidence/pipeline/run_1/summary.csv`. |
-| All major workflow prompts | Templates under `control_pipeline/prompts/`, full prompts in the committed contexts and generated repair prompts. |
-| Demos with concrete outcomes | Generated launchers, simulation histories, receipts and demonstration summary. |
-| Intermediate results and ontologies on GitHub | Complete selected evidence under `evidence/pipeline/run_1/`, including context snapshots and response provenance. |
+| Major design, argument and workflow prompts | `control_pipeline/prompts/DEVELOPMENT_CONTEXT.md`, operational templates, full prompts in both committed contexts and generated repair prompts. |
+| Demos with concrete outcomes | Both demo scripts, fresh responses, corrected response, generated launchers, simulation histories and summaries. |
+| Intermediate results and ontologies on GitHub | Selected evidence under `evidence/pipeline/run_1/` and `evidence/pipeline/session_2/`, including context snapshots and response provenance. |
